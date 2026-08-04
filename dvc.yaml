@@ -1,0 +1,36 @@
+stages:
+  download:
+    cmd: python -m training.scripts.download_brats --output ${BRATS_DATA_PATH}
+    deps:
+      - training/scripts/download_brats.py
+    outs:
+      - datasets/brats:
+          cache: true
+
+  preprocess:
+    cmd: python -m training.scripts.preprocess --input datasets/brats --output data/cache
+    deps:
+      - datasets/brats
+      - training/scripts/preprocess.py
+      - training/pipelines/preprocessing.py
+    outs:
+      - data/cache:
+          cache: true
+
+  train:
+    cmd: python -m training.scripts.train --config configs/training/default.yaml
+    deps:
+      - data/cache
+      - training/
+      - configs/
+    params:
+      - configs/training/default.yaml:
+          - training.epochs
+          - training.batch_size
+          - training.learning_rate
+    outs:
+      - data/models/checkpoints:
+          cache: true
+    metrics:
+      - data/models/metrics.json:
+          cache: false

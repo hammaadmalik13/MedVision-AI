@@ -1,0 +1,11 @@
+model:
+  name: unetplusplus
+  in_channels: 4
+  out_channels: 4
+  spatial_dims: 3
+  features: [32, 64, 128, 256, 512]
+  deep_supervision: true
+
+inference:
+  batch_size: 1
+  sliding_window: true

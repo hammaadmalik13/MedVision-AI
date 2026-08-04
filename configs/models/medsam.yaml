@@ -1,0 +1,12 @@
+model:
+  name: medsam
+  checkpoint: vit_b
+  image_size: 1024
+  prompt_type: box
+
+inference:
+  batch_size: 1
+
+notes: |
+  MedSAM uses 2D slice-based inference with prompt boxes.
+  Requires MedSAM checkpoint download.

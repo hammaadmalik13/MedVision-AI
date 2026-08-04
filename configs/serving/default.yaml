@@ -1,0 +1,26 @@
+serving:
+  backend: onnx  # torchserve, onnx
+  host: 0.0.0.0
+  port: 8080
+  workers: 2
+  max_batch_size: 4
+  timeout_seconds: 300
+  gpu_enabled: true
+  model_path: ./data/models/exported
+  default_model: unet
+
+torchserve:
+  model_store: ./serving/model_store
+  management_api: 8081
+  inference_api: 8080
+
+onnx:
+  providers:
+    - CUDAExecutionProvider
+    - CPUExecutionProvider
+  optimization_level: all
+
+tensorrt:
+  enabled: false
+  fp16: true
+  workspace_size: 1073741824

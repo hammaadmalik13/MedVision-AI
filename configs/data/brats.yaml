@@ -1,0 +1,54 @@
+# BraTS Dataset Configuration
+dataset:
+  name: brats
+  root_path: ${oc.env:BRATS_DATA_PATH,./datasets/brats}
+  cache_path: ${oc.env:PREPROCESSED_CACHE_PATH,./data/cache}
+  modalities:
+    - t1
+    - t1ce
+    - t2
+    - flair
+  num_classes: 4  # background, necrotic, edema, enhancing
+  label_remap:
+    0: 0
+    1: 1  # necrotic/non-enhancing
+    2: 2  # edema
+    4: 3  # enhancing tumor
+
+preprocessing:
+  target_spacing: [1.0, 1.0, 1.0]
+  target_size: [128, 128, 128]
+  intensity_normalization: zscore  # zscore, minmax, histogram
+  skull_stripping: false
+  denoising: false
+  resize_mode: trilinear
+  crop_foreground: true
+  pad_to_size: true
+
+split:
+  train_ratio: 0.7
+  val_ratio: 0.15
+  test_ratio: 0.15
+  seed: 42
+  patient_level: true
+
+augmentation:
+  enabled: true
+  random_rotation: 15
+  horizontal_flip: true
+  vertical_flip: true
+  elastic_transform: true
+  brightness: 0.2
+  contrast: 0.2
+  gaussian_noise: 0.01
+  blur: true
+  random_crop: true
+  random_scale: [0.85, 1.15]
+  cutmix: false
+  mixup: false
+
+verification:
+  check_affine: true
+  check_shape: true
+  check_labels: true
+  min_volume_size: [64, 64, 64]
